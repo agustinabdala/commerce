@@ -1,0 +1,118 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+{% if user.is_authenticated %}
+
+
+<form action="" method="POST">
+    {% csrf_token%}
+    {% if in_watchlist %}
+    <button type="submit" class="btn btn-outline-success btn" name="add_watchlist" value="remove">Remove from
+    Watchlist!</button>
+    {% else %}
+    <button type="submit" class="btn btn-outline-success btn" name="add_watchlist" value="add">Add to
+    Watchlist!</button>
+    {% endif %}
+    
+</form>
+
+<form action="{% url 'close' product.id %}" method="POST">
+    {% csrf_token%}
+    {% if owner %}
+    <button type="submit" class="btn btn-outline-danger btn" name="close_auction" value="add">Close Auction</button>
+    {% endif %}
+</form>
+
+{% else %}
+{{ empty }}
+
+{% endif %}
+
+<h2> Product: {{ product.title }}</h2>
+<h6>Category: {{ product.category }}</h6>
+
+{% if message %}
+<div class="alert alert-danger" role="alert">
+    {{ message }}
+</div>
+{% endif %}
+
+{% if success %}
+<div class="alert alert-success" role="alert">
+    {{ success }}
+</div>
+{% endif %}
+
+<div class="row border border-gray rounded align-items-center ">
+    <div class="col-4">
+        <img src="{{ product.image_url }}" class="img-fluid" alt="product image">
+    </div>
+
+    <div class="col-8">
+        <br>
+        <h2>Product Description</h2>
+        <p> {{ product.description }} </p>
+        <br>
+
+        <h5><b>Price: </b>${{ product.price }}</h5>
+        <h5><b>Winning bid by : </b>{{ product.winner }}</h5>
+
+        {% if user.is_authenticated %}
+        <form method="POST">
+            {% csrf_token%}
+            <label for="bid">Bid: </label>
+            <input type="text" id="bid" name="bid" placeholder="{{ product.price }}">
+            <input type="submit" class="btn btn-outline-success btn" value="bid">
+
+        </form>
+
+        {% else %}
+        Not signed in.
+        {% endif %}
+
+        <br>
+        <br>
+        <h6 style="color: gray;">Created {{ product.creation_datetime }}</h6>
+        <h6 style="color: gray;">Author: {{ product.author }}</h6>
+
+    </div>
+</div>
+
+<br>
+
+<div class="row border border-gray rounded align-items-center ">
+    <h2>Comments</h2>
+    <br>
+</div>
+
+<div class="row">
+    <div class="col-md">
+        {% if user.is_authenticated %}
+        <form method="POST" name="post_comment" enctype="multipart/form-data">
+            {% csrf_token %}
+            <textarea class="form-control" name="comment_textarea" rows="3"></textarea> 
+            <input class="btn btn-outline-success btn" type="submit" name="submit_comment" value='Post!'>
+        </form>
+
+    </div>
+    {% endif %}
+
+    <div class="col-md">
+
+        {% for c in comment_posts %}
+        <div class="alert alert-primary" role="alert">
+
+            (From <b>{{ c.commenter }}) </b>{{ c.comment }}
+        </div>
+        {% empty %}
+        <p>No comments on this listing</p>
+        {% endfor %}
+
+    </div>
+</div>
+
+
+
+
+{% endblock %}

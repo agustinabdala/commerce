@@ -1,0 +1,45 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<h2>Category List</h2>
+
+
+
+{% for listing in listings%}
+
+{% if listing.active %}
+
+<div style="height:300px">
+    <div class="row border border-gray rounded align-items-center mt-2">
+        <div class="col-4">
+            <img src="{{ listing.image_url }}" class="img-fluid" alt="product image">
+        </div>
+
+        <div class="col-8">
+            <br>
+
+            <!--<h3>{{ listing.title }} {{listing.id}}</h3>-->
+            <h3><a href="{% url 'listing' listing.id %}">{{ listing.title }}</a></h3>
+
+            <h5><b>Price: </b>${{ listing.price }}</h5>
+            <h6 style="color: gray;">Created {{ listing.creation_datetime }}</h6>
+            <h6 style="color: gray;">Author: {{ listing.author }}</h6>
+            
+
+        </div>
+
+    </div>
+</div>
+
+{% endif %}
+
+
+{% endfor %}
+
+
+
+
+
+
+
+{% endblock %}

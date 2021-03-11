@@ -1,0 +1,35 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<h2>Auction Closed!</h2>
+
+
+
+<div style="height:300px">
+    <div class="row border border-gray rounded align-items-center mt-2">
+        <div class="col-4">
+            <img src="{{ product.image_url }}" class="img-fluid" alt="product image">
+        </div>
+
+        <div class="col-8">
+            <br>
+
+            <h3>{{ product.title }}</h3>
+            <br>
+            <h3><b>Winner: </b>{{ product.winner }}</h3>  
+            <h3><b>Price: </b>${{ product.price }}</h3>
+            <br>
+            <h6 style="color: gray;">Created {{ product.creation_datetime }}</h6>
+            <h6 style="color: gray;">Author: {{ product.author }}</h6>
+            <h6 style="color: gray;">Category: {{ product.category }}</h6>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+{% endblock %}
